@@ -244,6 +244,17 @@ typedef struct
 #define IRQ_NO_EXTI9_5		23
 #define IRQ_NO_EXTI15_10	40
 
+/*
+* macros for all the possible priority levels (can create more any value)
+*/
+#define NVIC_IRQ_PRIO0      0
+#define NVIC_IRQ_PRIO1      1
+#define NVIC_IRQ_PRIO2      2
+#define NVIC_IRQ_PRIO3      3
+#define NVIC_IRQ_PRIO4      4
+#define NVIC_IRQ_PRIO5      5
+#define NVIC_IRQ_PRIO6      6
+#define NVIC_IRQ_PRIO7      7
 
 //some generic macros
 #define ENABLE  1

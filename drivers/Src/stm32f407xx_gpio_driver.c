@@ -26,7 +26,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
             // configure the RTSR
             EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
             //clear the corresponding RTSR bit
-            EXTI->FTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);            
+            EXTI->FTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
         }
         else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RFT)
         {
@@ -205,13 +205,61 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
 
 
 /*Interupt Configuration adn ISR handling*/
-void GPIO_IRQConfig(uint8_t IRQNumber,uint8_t IRQPriority, uint8_t EnorDi)
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
-    
+    if (EnorDi == ENABLE)
+    {
+        if (IRQNumber <=31)
+        {
+            // program ISER0 register
+            *NVIC_ISER0 |= (1 << IRQNumber);
+        }
+        else if ((IRQNumber > 31) && (IRQNumber < 64)) //32 to 63
+        {
+            // program ISE1 regiter
+            *NVIC_ISER1 |= (1 << (IRQNumber % 32));
+        }
+        else if ((IRQNumber >= 64) && (IRQNumber <96))
+        {
+            // program ISE2 regiter
+            *NVIC_ISER2 |= (1 << (IRQNumber % 64));
+        }
+    }
+    else
+    {
+        if (IRQNumber <=31)
+        {
+            // program ISER0 register
+            *NVIC_ICER0 |= (1 << IRQNumber);
+        }
+        else if ((IRQNumber > 31) && (IRQNumber < 64)) //32 to 63
+        {
+            // program ISE1 regiter
+            *NVIC_ICER1 |= (1 << (IRQNumber % 32));
+        }
+        else if ((IRQNumber >= 64) && (IRQNumber <96))
+        {
+            // program ISE2 regiter
+            *NVIC_ICER2 |= (1 << (IRQNumber % 64));
+        }
+    }
+}
+
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
+{
+    //uint8_t iprx = IRQNumber/4;
+    uint8_t iprx_section = IRQNumber%4;
+    uint8_t shift_amount = (8 * iprx_section) + (8 - NO_PR_BIT_IMPLEMENTED);
+
+    *(NVIC_PR_BASE_ADDR + IRQNumber) |= (IRQPriority << shift_amount); // because a IRQ is 32 bit (4 byte)
 }
 
 void GPIO_IRQHandling(uint8_t PinNumber)
 {
-
+    // clear the EXTI PR register corresponding to the pin number
+    if (EXTI->PR & (1 <<PinNumber))
+    {
+        EXTI->PR |= (1 <<PinNumber);
+    }
 }
 

@@ -76,8 +76,10 @@
 #define I2C2_BASE               (APB1PERIPH_BASE + 0x5800U)
 #define I2C3_BASE               (APB1PERIPH_BASE + 0x5C00U)
 
+#define SPI1_BASE               (APB2PERIPH_BASE + 0x3000U)
 #define SPI2_BASE               (APB1PERIPH_BASE + 0x3800U)
 #define SPI3_BASE               (APB1PERIPH_BASE + 0x3C00U)
+#define SPI4_BASE               (APB2PERIPH_BASE + 0x3000U)
 
 #define USART2_BASE             (APB1PERIPH_BASE + 0x4400U)
 #define USART3_BASE             (APB1PERIPH_BASE + 0x4800U)
@@ -89,7 +91,6 @@
 */
 
 #define EXTI_BASEADDR           (APB2PERIPH_BASE + 0x3C00U)
-#define SPI1_BASEADDR           (APB2PERIPH_BASE + 0x3000U)
 #define SYSCFG_BASEADDR         (APB2PERIPH_BASE + 0x3800U)
 #define USART1_BASEADDR         (APB2PERIPH_BASE + 0x1000U)
 #define USART6_BASEADDR         (APB2PERIPH_BASE + 0x1400U)
@@ -182,6 +183,20 @@ typedef struct
 }SYSCFG_RegDef_t;
 
 
+typedef struct
+{
+    __vo uint32_t CR1;
+    __vo uint32_t CR2;
+    __vo uint32_t SR;
+    __vo uint32_t DR; ;
+    __vo uint32_t CRCPR;
+    __vo uint32_t RXCRCR;
+    __vo uint32_t TXCRCR;
+    __vo uint32_t I2SCFGR;
+    __vo uint32_t I2SPR;
+}SPI_RegDef_t;
+
+
 #define GPIOA               ((GPIO_RegDef_t*)GPIOA_BASEADDR)
 #define GPIOB               ((GPIO_RegDef_t*)GPIOB_BASEADDR)
 #define GPIOC               ((GPIO_RegDef_t*)GPIOC_BASEADDR)
@@ -197,6 +212,11 @@ typedef struct
 #define EXTI                ((EXTI_RegDef_t*)EXTI_BASEADDR)
 
 #define SYSCFG              ((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
+
+#define SPI1                ((SPI_RegDef_t*)SPI1_BASE)
+#define SPI2                ((SPI_RegDef_t*)SPI2_BASE)
+#define SPI3                ((SPI_RegDef_t*)SPI3_BASE)
+#define SPI4                ((SPI_RegDef_t*)SPI4_BASE)
 /*config clock GPIO*/
 #define GPIOA_PCLK_EN()   (RCC->AHB1ENR |= (1<<0))
 #define GPIOB_PCLK_EN()   (RCC->AHB1ENR |= (1<<1))
@@ -332,5 +352,46 @@ typedef struct
                                     (x == GPIOG) ? 6:   \
                                     (x == GPIOH) ? 7:   \
                                     (x == GPIOI) ? 8: 0 )
+
+/************************************************************************************************************
+ *  Bit position definitions of SPI peripheral
+ */
+// SPI_CR1 register
+#define SPI_CR1_CPHA			0
+#define SPI_CR1_CPOL			1
+#define SPI_CR1_MSTR			2
+#define SPI_CR1_BR				3
+#define SPI_CR1_SPE			    6
+#define SPI_CR1_LSBFIRST		7
+#define SPI_CR1_SSI			    8
+#define SPI_CR1_SSM			    9
+#define SPI_CR1_RXONLY			10
+#define SPI_CR1_DFF			    11
+#define SPI_CR1_CRCNEXT		    12
+#define SPI_CR1_CRCEN			13
+#define SPI_CR1_BIDIOE			14
+#define SPI_CR1_BIDIMODE		15
+// SPI_CR2 register
+#define SPI_CR2_RXDMAEN			0
+#define SPI_CR2_TXDMAEN			1
+#define SPI_CR2_SSOE			2
+#define SPI_CR2_FRF				4
+#define SPI_CR2_ERRIE			5
+#define SPI_CR2_RXNEIE			6
+#define SPI_CR2_TXEIE			7
+// SPI_SR register
+#define SPI_SR_RXNE				0
+#define SPI_SR_TXE				1
+#define SPI_SR_CHSIDE			2
+#define SPI_SR_UDR				3
+#define SPI_SR_CRCERR			4
+#define SPI_SR_MODF				5
+#define SPI_SR_OVR				6
+#define SPI_SR_BSY				7
+#define SPI_SR_FRE				8
+
+#define FLAG_RESET			RESET
+#define FLAG_SET			SET
+
 
 #endif /* INC_STM32F407XX_H_ */

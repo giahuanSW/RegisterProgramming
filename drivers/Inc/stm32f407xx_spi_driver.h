@@ -120,9 +120,52 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
  * @return		- none
  */
 void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
+/*
+* @fn			- SPI_IRQPriorityConfig
+ * @brief		- This function sets the priority for the given SPI peripheral interrupt
+ * @param[in]	- IRQNumber: IRQ number of the SPI peripheral
+ * @param[in]	- IRQPriority: priority value to be set
+ * @return		- none
+ */
 void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t EnorDi);
+/*
+* @fn			- SPI_IRQHandling
+ * @brief		- This function handles the SPI interrupt
+ * @param[in]	- pSPIHandle: pointer to the SPI handle structure
+ * @return		- none
+ */
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle);
+/*
+ * @fn			- SPI_GetFlagStatus
+ * @brief		- This function checks the status of the given flag in the SPI_SR register
+ * @param[in]	- pSPIx: base address of the SPI peripheral
+ * @param[in]	- FlagName: name of the flag to check
+ * @return		- FLAG_SET or FLAG_RESET
+ */
 uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName);
+/*
+ * @fn			- SPI_PeripheralControl
+ * @brief		- This function enables or disables the SPI peripheral
+ * @param[in]	- pSPIx: base address of the SPI peripheral
+ * @param[in]	- EnOrDi: ENABLE or DISABLE macros
+ * @return		- none
+ */
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
+/*
+ * @fn			- SPI_SSIConfig
+ * @brief		- This function configures the SSI bit in the SPI_CR1 register
+ * @param[in]	- pSPIx: base address of the SPI peripheral
+ * @param[in]	- EnOrDi: ENABLE or DISABLE macros
+ * @return		- none
+ */
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
+/*
+ * @fn			- SPI_SSOEConfig
+ * @brief		- This function configures the SSOE bit in the SPI_CR2 register
+ * @param[in]	- pSPIx: base address of the SPI peripheral
+ * @param[in]	- EnOrDi: ENABLE or DISABLE macros
+ * @return		- none
+ */
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
+
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

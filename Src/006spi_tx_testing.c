@@ -13,8 +13,8 @@
 /*
  * PB14 --> MISO
  * PB15 --> MOSI
- * PB10 --> NSS
- * PB13 --> SCLC
+ * PB12 --> NSS
+ * PB13 --> SLCK
  */
 void SPI2_GPIOInits(void)
 {
@@ -32,8 +32,8 @@ void SPI2_GPIOInits(void)
 	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15;
 	GPIO_Init(&SPIPins);
 	//MISO
-//	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
-//	GPIO_Init(&SPIPins);
+	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
+	GPIO_Init(&SPIPins);
 //	NSS
 	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
 	GPIO_Init(&SPIPins);

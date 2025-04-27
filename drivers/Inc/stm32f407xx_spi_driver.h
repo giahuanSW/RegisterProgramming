@@ -52,6 +52,19 @@
 #define SPI_TXE_FLAG						(1 << SPI_SR_TXE)
 #define SPI_RXNE_FLAG						(1 << SPI_SR_RXNE)
 #define SPI_BUSY_FLAG						(1 << SPI_SR_BSY)
+
+#define SPI_READY							0
+#define SPI_BUSY_IN_RX						1
+#define SPI_BUSY_IN_TX						2
+
+/*
+ * Possible SPI Application events
+ */
+#define SPI_EVENT_TX_CMPLT	1
+#define SPI_EVENT_RX_CMPLT	2
+#define SPI_EVENT_OVR_ERR	3
+#define SPI_EVENT_CRC_ERR	4
+
 typedef struct
 {
 	uint8_t SPI_DeviceMode;
@@ -71,6 +84,12 @@ typedef struct
 {
 	SPI_RegDef_t *pSPIx;
 	SPI_Config_t SPIConfig;
+	uint8_t 	 *pTxBuffer;
+	uint8_t		 *pRxBuffer;
+	uint32_t	 TxLen;
+	uint32_t	 RxLen;
+	uint8_t		 TxState;
+	uint8_t		 RxState;
 }SPI_Handle_t;
 
 /*********************************************************************************************************
@@ -167,5 +186,27 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
  * @return		- none
  */
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
+/*
+* @fn			- SPI_SendDataIT
+ * @brief		- This function sends data using the SPI peripheral in interrupt mode
+ * @param[in]	- pSPIHandle: pointer to the SPI handle structure
+ * @param[in]	- pTxBuffer: pointer to the data buffer to be sent
+ * @param[in]	- Len: length of the data to be sent
+ * @return		- none
+ */
+uint8_t SPI_SendData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t Len);
+/*
+* @fn			- SPI_ReceiveDataIT
+ * @brief		- This function receives data using the SPI peripheral in interrupt mode
+ * @param[in]	- pSPIHandle: pointer to the SPI handle structure
+ * @param[in]	- pRxBuffer: pointer to the data buffer to store received data
+ * @param[in]	- Len: length of the data to be received
+ * @return		- none
+ */
+uint8_t SPI_ReceiveData_IT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len);
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
+void SPI_CloseTransmisson(SPI_Handle_t *pSPIHandle);
+void SPI_CloseReception(SPI_Handle_t *pSPIHandle);
 
+void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t AppEv);
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

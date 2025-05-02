@@ -197,6 +197,20 @@ typedef struct
     __vo uint32_t I2SPR;
 }SPI_RegDef_t;
 
+typedef struct
+{
+	__vo uint32_t CR1;
+	__vo uint32_t CR2;
+	__vo uint32_t OAR1;
+	__vo uint32_t OAR2;
+	__vo uint32_t DR;
+	__vo uint32_t SR1;
+	__vo uint32_t SR2;
+	__vo uint32_t CCR;
+	__vo uint32_t TRISE;
+	__vo uint32_t FLTR;
+}I2C_RegDef_t;
+
 
 #define GPIOA               ((GPIO_RegDef_t*)GPIOA_BASEADDR)
 #define GPIOB               ((GPIO_RegDef_t*)GPIOB_BASEADDR)
@@ -218,6 +232,12 @@ typedef struct
 #define SPI2                ((SPI_RegDef_t*)SPI2_BASE)
 #define SPI3                ((SPI_RegDef_t*)SPI3_BASE)
 #define SPI4                ((SPI_RegDef_t*)SPI4_BASE)
+
+#define I2C1				((I2C_RegDef_t*)I2C1_BASE)
+#define I2C2				((I2C_RegDef_t*)I2C2_BASE)
+#define I2C3				((I2C_RegDef_t*)I2C3_BASE)
+
+
 /*config clock GPIO*/
 #define GPIOA_PCLK_EN()   (RCC->AHB1ENR |= (1<<0))
 #define GPIOB_PCLK_EN()   (RCC->AHB1ENR |= (1<<1))
@@ -231,8 +251,8 @@ typedef struct
 
 /*config clock I2C*/
 #define I2C1_PCLK_EN()    (RCC->APB1ENR |= (1<<21))
-#define I2C2_PCLK_EN()    (RCC->APB1ENR |= (1<<21))
-#define I2C3_PCLK_EN()    (RCC->APB1ENR |= (1<<21))
+#define I2C2_PCLK_EN()    (RCC->APB1ENR |= (1<<22))
+#define I2C3_PCLK_EN()    (RCC->APB1ENR |= (1<<23))
 
 /*config clock SPI*/
 #define SPI1_PCLK_EN()    (RCC->APB2ENR |= (1<<12))
@@ -267,6 +287,18 @@ typedef struct
 #define IRQ_NO_SPI1		    35
 #define IRQ_NO_SPI2		    36
 #define IRQ_NO_SPI3		    51
+#define IRQ_NO_I2C1_EV		31
+#define IRQ_NO_I2C1_ER		32
+#define IRQ_NO_I2C2_EV		33
+#define IRQ_NO_I2C2_ER		34
+#define IRQ_NO_I2C3_EV		72
+#define IRQ_NO_I2C3_ER		73
+#define IRQ_NO_USART1		37
+#define IRQ_NO_USART2		38
+#define IRQ_NO_USART3		39
+#define IRQ_NO_UART4		40
+#define IRQ_NO_UART5		41
+#define IRQ_NO_USART6		71
 
 /*
 * macros for all the possible priority levels (can create more any value)
@@ -393,6 +425,97 @@ typedef struct
 #define SPI_SR_OVR				6
 #define SPI_SR_BSY				7
 #define SPI_SR_FRE				8
+
+
+// I2C_CR1 register
+#define I2C_CR1_PE				0
+#define I2C_CR1_SMBUS			1
+#define I2C_CR1_SMBTYPE		    3
+#define I2C_CR1_ENARP			4
+#define I2C_CR1_ENPEC			5
+#define I2C_CR1_ENGC			6
+#define I2C_CR1_NOSTRETCH		7
+#define I2C_CR1_START			8
+#define I2C_CR1_STOP			9
+#define I2C_CR1_ACK				10
+#define I2C_CR1_POS				11
+#define I2C_CR1_PEC				12
+#define I2C_CR1_ALERT			13
+#define I2C_CR1_SWRST			15
+
+// I2C_CR2 register
+#define I2C_CR2_FREQ			0
+#define I2C_CR2_ITERREN		    8
+#define I2C_CR2_ITEVTEN		    9
+#define I2C_CR2_ITBUFEN		    10
+#define I2C_CR2_DMAEN			11
+#define I2C_CR2_LAST			12
+
+// I2C_OAR1 register
+#define I2C_OAR1_ADD0			0
+#define I2C_OAR1_ADD1			1
+#define I2C_OAR1_ADD2			2
+#define I2C_OAR1_ADD3			3
+#define I2C_OAR1_ADD4			4
+#define I2C_OAR1_ADD5			5
+#define I2C_OAR1_ADD6			6
+#define I2C_OAR1_ADD7			7
+#define I2C_OAR1_ADD8			8
+#define I2C_OAR1_ADD9			9
+#define I2C_OAR1_ADD10			10
+#define I2C_OAR1_ADDMODE		15
+// I2C_OAR2 register
+#define I2C_OAR2_ENDUAL		    0
+#define I2C_OAR2_ADD0			1
+#define I2C_OAR2_ADD1			2
+#define I2C_OAR2_ADD2			3
+#define I2C_OAR2_ADD3			4
+#define I2C_OAR2_ADD4			5
+#define I2C_OAR2_ADD5			6
+#define I2C_OAR2_ADD6			7
+#define I2C_OAR2_ADD7			8
+#define I2C_OAR2_ADD8			9
+#define I2C_OAR2_ADD9			10
+#define I2C_OAR2_ADD10			11
+#define I2C_OAR2_ADDMODE		15
+// I2C_SR1 register
+#define I2C_SR1_SB				0
+#define I2C_SR1_ADDR			1
+#define I2C_SR1_BTF			    2
+#define I2C_SR1_ADD10			3
+#define I2C_SR1_STOPF			4
+#define I2C_SR1_RXNE			6
+#define I2C_SR1_TXE			    7
+#define I2C_SR1_BERR			8
+#define I2C_SR1_ARLO			9
+#define I2C_SR1_AF				10
+#define I2C_SR1_OVR			    11
+#define I2C_SR1_PECERR			12
+#define I2C_SR1_TIMEOUT		    14
+#define I2C_SR1_SMBALERT		15
+// I2C_SR2 register
+#define I2C_SR2_MSL				0
+#define I2C_SR2_BUSY			1
+#define I2C_SR2_TRA				2
+#define I2C_SR2_GENCALL		    4
+#define I2C_SR2_DUALF			7
+#define I2C_SR2_PEC				8
+#define I2C_SR2_PECBYTE		    15
+// I2C_CCR register
+#define I2C_CCR_CCR			    0
+#define I2C_CCR_DUTY			14
+#define I2C_CCR_FS				15
+// I2C_TRISE register
+#define I2C_TRISE_TRISE		    0
+
+
+// I2C_FLTR register
+#define I2C_FLTR_DNF			0
+#define I2C_FLTR_ANOFF		    4
+
+
+
+
 
 #define FLAG_RESET			RESET
 #define FLAG_SET			SET

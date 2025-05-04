@@ -146,7 +146,7 @@ void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
  * @param[in]	- IRQPriority: priority value to be set
  * @return		- none
  */
-void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t EnorDi);
+void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
 /*
 * @fn			- SPI_IRQHandling
  * @brief		- This function handles the SPI interrupt

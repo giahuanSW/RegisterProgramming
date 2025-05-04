@@ -77,6 +77,17 @@ typedef struct
 #define I2C_PECERR_FLAG						(1 << I2C_SR1_PECERR)
 #define I2C_TIMEOUT_FLAG					(1 << I2C_SR1_TIMEOUT)
 #define I2C_SMBALERT_FLAG					(1 << I2C_SR1_SMBALERT)
+
+#define I2C_EV_TX_CMPLT  	 	0
+#define I2C_EV_RX_CMPLT  	 	1
+#define I2C_EV_STOP       		2
+#define I2C_ERROR_BERR 	 		3
+#define I2C_ERROR_ARLO  		4
+#define I2C_ERROR_AF    		5
+#define I2C_ERROR_OVR   		6
+#define I2C_ERROR_TIMEOUT 		7
+#define I2C_EV_DATA_REQ         8
+#define I2C_EV_DATA_RCV         9
 /*********************************************************************************************************
 *                           APIs supported by this driver
 *               For more information about the APIs, check the function definitions in the source file
@@ -107,7 +118,7 @@ void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
  * @param[in]	- IRQPriority: priority value to be set
  * @return		- none
  */
-void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint8_t EnorDi);
+void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
 /*
 * @fn           - I2C_EV_IRQHandling
  * @brief		- This function handles the I2C event interrupt
@@ -150,17 +161,17 @@ void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv);
  * @param[in]	- SlaveAddr: address of the slave device
  * @return		- none
 */
-void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t Len, uint8_t SlaveAddr);
+void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t Len, uint8_t SlaveAddr,uint8_t Sr);
 /*
  * @fn			- I2C_MasterReceiveData
  * @brief		- This function receives data from the specified slave device
  * @param[in]	- pI2CHandle: pointer to the I2C handle structure
- * @param[in]	- pRxbuffer: pointer to the data buffer to store received data
+ * @param[in]	- pRxBuffer: pointer to the data buffer to store received data
  * @param[in]	- Len: length of the data to be received
  * @param[in]	- SlaveAddr: address of the slave device
  * @return		- none
 */
-void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxbuffer, uint32_t Len, uint8_t SlaveAddr);
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len, uint8_t SlaveAddr,uint8_t Sr);
 /*
 * @fn           - I2C_MasterSendDataIT
  * @brief        - This function sends data to the specified slave device using interrupt
@@ -178,14 +189,14 @@ uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint3
  * @fn			- I2C_MasterReceiveDataIT
  * @brief		- This function receives data from the specified slave device using interrupt
  * @param[in]	- pI2CHandle: pointer to the I2C handle structure
- * @param[in]	- pRxbuffer: pointer to the data buffer to store received data
+ * @param[in]	- pRxBuffer: pointer to the data buffer to store received data
  * @param[in]	- Len: length of the data to be received
  * @param[in]	- SlaveAddr: address of the slave device
  * @param[in]	- Sr: repeated start condition
  * @return		- none
  * @note		- This function is used for non-blocking communication
 */
-uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxbuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr);
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr,uint8_t Sr);
 /*
  * @fn			- I2C_ManageAcking
  * @brief		- This function manages the ACK/NACK response for the I2C communication

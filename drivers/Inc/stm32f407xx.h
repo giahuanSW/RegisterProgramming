@@ -525,10 +525,9 @@ typedef struct
 
 
 
-
-
 #define FLAG_RESET			RESET
 #define FLAG_SET			SET
 
-
+#define I2C_DISABLE_SR  	RESET
+#define I2C_ENABLE_SR   	SET
 #endif /* INC_STM32F407XX_H_ */

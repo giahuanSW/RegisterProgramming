@@ -207,4 +207,23 @@ uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle,uint8_t *pRxBuffer, uin
  * 				- This is required when only one byte is received from the slave
 */
 void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
+
+/*
+ * @fn			- I2C_SlaveSendData
+ * @brief		- This function sends data to the master device
+ * @param[in]	- pI2Cx: base address of the I2C peripheral
+ * @param[in]	- Data: data byte to be sent
+ * @return		- none
+*/
+void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t Data);
+
+/*
+ * @fn			- I2C_SlaveReceiveData
+ * @brief		- This function receives data from the master device
+ * @param[in]	- pI2Cx: base address of the I2C peripheral
+ * @return		- received data byte
+*/
+uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx);
+
+void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2Cx,uint8_t EnorDi);
 #endif /* INC_STM32F407XX_I2C_DRIVER_H_ */

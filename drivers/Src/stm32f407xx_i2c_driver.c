@@ -135,23 +135,6 @@
 	 pI2Cx->CR1 |= ( 1 << I2C_CR1_STOP);
  }
  
- 
-  void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2Cx,uint8_t EnorDi)
-  {
-	  if(EnorDi == ENABLE)
-	  {
-			 pI2Cx->CR2 |= ( 1 << I2C_CR2_ITEVTEN);
-			 pI2Cx->CR2 |= ( 1 << I2C_CR2_ITBUFEN);
-			 pI2Cx->CR2 |= ( 1 << I2C_CR2_ITERREN);
-	  }else
-	  {
-			 pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITEVTEN);
-			 pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITBUFEN);
-			 pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITERREN);
-	  }
- 
-  }
- 
  /*********************************************************************
   * @fn      		  - I2C_PeripheralControl
   *
@@ -728,15 +711,6 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_
  }
  
  
- void I2C_SlaveSendData(I2C_RegDef_t *pI2C,uint8_t data)
- {
-	 pI2C->DR = data;
- }
- 
- uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2C)
- {
-	 return (uint8_t) pI2C->DR;
- }
  
  
  
@@ -837,7 +811,8 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_
 			 {
 				 I2C_MasterHandleTXEInterrupt(pI2CHandle);
 			 }
-		 }else
+		 }
+		 else
 		 {
 			 //slave
 			 //make sure that the slave is really in transmitter mode
@@ -978,6 +953,31 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_
  }
  
  
+ void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t Data)
+ {
+	 pI2Cx->DR = Data;
+ }
+ uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx)
+ {
+	 return (uint8_t)pI2Cx->DR;
+ }
  
- 
- 
+ void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2Cx,uint8_t EnorDi)
+ {
+	 if (EnorDi == ENABLE)
+	 {
+		 pI2Cx->CR2 |= ( 1 << I2C_CR2_ITBUFEN);
+
+		 //Implement the code to enable ITEVFEN Control Bit
+		 pI2Cx->CR2 |= ( 1 << I2C_CR2_ITEVTEN);
+
+		 //Implement the code to enable ITERREN Control Bit
+		 pI2Cx->CR2 |= ( 1 << I2C_CR2_ITERREN);
+	 }
+	 else
+	 {
+		 pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITBUFEN);
+		 pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITEVTEN);
+		 pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITERREN);
+	 }
+ }

@@ -211,6 +211,16 @@ typedef struct
 	__vo uint32_t FLTR;
 }I2C_RegDef_t;
 
+typedef struct
+{
+	__vo uint32_t SR;
+	__vo uint32_t DR;
+	__vo uint32_t BRR;
+	__vo uint32_t CR1;
+	__vo uint32_t CR2;
+	__vo uint32_t CR3;
+	__vo uint32_t GTPR;
+}USART_RegDef_t;
 
 #define GPIOA               ((GPIO_RegDef_t*)GPIOA_BASEADDR)
 #define GPIOB               ((GPIO_RegDef_t*)GPIOB_BASEADDR)
@@ -237,6 +247,12 @@ typedef struct
 #define I2C2				((I2C_RegDef_t*)I2C2_BASE)
 #define I2C3				((I2C_RegDef_t*)I2C3_BASE)
 
+#define USART1				((USART_RegDef_t*)USART1_BASEADDR)
+#define USART2				((USART_RegDef_t*)USART2_BASE)
+#define USART3				((USART_RegDef_t*)USART3_BASE)
+#define UART4				((USART_RegDef_t*)UART4_BASE)
+#define UART5				((USART_RegDef_t*)UART5_BASE)
+#define USART6				((USART_RegDef_t*)USART6_BASEADDR)
 
 /*config clock GPIO*/
 #define GPIOA_PCLK_EN()   (RCC->AHB1ENR |= (1<<0))
@@ -261,11 +277,12 @@ typedef struct
 #define SPI4_PCLK_EN()    (RCC->APB2ENR |= (1<<13))
 
 /*config clock UART*/
+#define USART1_PCLK_EN()    (RCC->APB2ENR |= (1<<4))
 #define USART2_PCLK_EN()    (RCC->APB1ENR |= (1<<17))
 #define USART3_PCLK_EN()    (RCC->APB1ENR |= (1<<18))
 #define UART4_PCLK_EN()     (RCC->APB1ENR |= (1<<19))
 #define UART5_PCLK_EN()     (RCC->APB1ENR |= (1<<20))
-
+#define USART6_PCLK_EN()    (RCC->APB2ENR |= (1<<5))
 /*config clock SYSCFG*/
 #define SYSCFG_PCLK_EN()    (RCC->APB2ENR |= (1<<14))
 
@@ -530,4 +547,66 @@ typedef struct
 
 #define I2C_DISABLE_SR  	RESET
 #define I2C_ENABLE_SR   	SET
+
+
+// USART_SR register
+#define USART_SR_PE				0
+#define USART_SR_FE				1
+#define USART_SR_NE				2
+#define USART_SR_ORE			3
+#define USART_SR_IDLE			4
+#define USART_SR_RXNE			5
+#define USART_SR_TC				6
+#define USART_SR_TXE			7
+#define USART_SR_LBD			8
+#define USART_SR_CTS			9
+// USART_DR register
+
+
+// USART_CR1 register
+#define USART_CR1_SBK			0
+#define USART_CR1_RWU			1
+#define USART_CR1_RE			2
+#define USART_CR1_TE			3
+#define USART_CR1_IDLEIE		4
+#define USART_CR1_RXNEIE		5
+#define USART_CR1_TCIE			6
+#define USART_CR1_TXEIE		7
+#define USART_CR1_PEIE			8
+#define USART_CR1_PS			9
+#define USART_CR1_PCE			10
+#define USART_CR1_WAKE			11
+#define USART_CR1_M			12
+#define USART_CR1_UE			13
+#define USART_CR1_OVER8		15
+// USART_CR2 register
+#define USART_CR2_ADD			0
+#define USART_CR2_LBDL			5
+#define USART_CR2_LBDIE		6
+#define USART_CR2_LBCL			8
+#define USART_CR2_CPHA			9
+#define USART_CR2_CPOL			10
+#define USART_CR2_CLKEN		11
+#define USART_CR2_STOP			12
+#define USART_CR2_LINEN		14
+// USART_CR3 register
+#define USART_CR3_EIE			0
+#define USART_CR3_IREN			1
+#define USART_CR3_IRLP			2
+#define USART_CR3_HDSEL		3
+#define USART_CR3_NACK			4
+#define USART_CR3_SCEN			5
+#define USART_CR3_DMAR			6
+#define USART_CR3_DMAT			7
+#define USART_CR3_RTSE			8
+#define USART_CR3_CTSE			9
+#define USART_CR3_CTSIE		10
+#define USART_CR3_ONEBIT		11
+// USART_BRR register
+#define USART_BRR_DIV_FRACTION	0
+#define USART_BRR_DIV_MANTISSA	4
+// USART_GTPR register
+#define USART_GTPR_PSC			0
+#define USART_GTPR_GT			8
+
 #endif /* INC_STM32F407XX_H_ */

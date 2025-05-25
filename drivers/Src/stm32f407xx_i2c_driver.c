@@ -172,6 +172,7 @@
  void I2C_Init(I2C_Handle_t *pI2CHandle)
  {
 	 uint32_t tempreg = 0 ;
+	 I2C_PeriClockControl(pI2CHandle->pI2Cx,ENABLE);
 	 //ack control bit
 	 pI2CHandle->pI2Cx->CR1 |= pI2CHandle->I2C_Config.I2C_ACKControl << 10;
  
